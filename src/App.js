@@ -1,5 +1,6 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // function App() {
 
@@ -114,32 +115,71 @@ import { useState } from 'react';
 
 
 
+// const App = () => {
+
+//   const [text, setText] = useState("")
+//   const [edit, setEdit] = useState("false")
+
+//   let content = <div>
+//     {text}<button onClick={() => setEdit(true)}>수정</button>
+//   </div>
+
+//   if(edit) {
+//     content = <div>
+//       <input type="text"
+//       value={text}
+//       onChange={(e) => {
+//         setText(e.target.value);
+//       }}
+//     />
+//     <button onClick={() => setEdit(false)}>수정</button>
+//     </div>
+//   }
+
+//   return (
+//     <>
+//       {content}
+//     </>
+//   );
+// }
+
+
 const App = () => {
 
-  const [text, setText] = useState("")
-  const [edit, setEdit] = useState("false")
+  const [photos, setPhotos] = useState([]);
 
-  let content = <div>
-    {text}<button onClick={() => setEdit(true)}>수정</button>
-  </div>
+  // useEffect(async () => {
+  // try{
+  //     const response = await axios.get('https://jsonplaceholder.typicode.com/photos');
+  //     setPhotos(response.data);
+  // } catch(error){
+  //     console.log(error)
+  // }
+  // })
 
-  if(edit) {
-    content = <div>
-      <input type="text"
-      value={text}
-      onChange={(e) => {
-        setText(e.target.value);
-      }}
-    />
-    <button onClick={() => setEdit(false)}>수정</button>
-    </div>
-  }
+  useEffect(() => {
+    // axios({
+    //   method:'GET',
+    //   url:'https://jsonplaceholder.typicode.com/photos'               // https://jsonplaceholder.typicode.com/
+    // }).then(response => setPhotos(response.data))
+
+    axios.get('https://jsonplaceholder.typicode.com/photos')
+         .then(response => setPhotos(response.data))                    // axios({method, url}).then() 과 같음
+  })
+
+
 
   return (
-    <>
-      {content}
-    </>
-  );
+      <ul>
+        {photos.map(photo => (
+          <li key={photo.id}>
+            <div>{photo.title}</div>
+            <div><img src={photo.thumbnailUrl}/></div>
+          </li>
+        ))}
+      </ul>
+    )
 }
+
 
 export default App;
